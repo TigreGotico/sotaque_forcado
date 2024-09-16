@@ -104,4 +104,5 @@ class Sotaque:
 
     def phonemize(self, text):
         from phonemizer import phonemize
+        text = self.add_accent(text)
         return phonemize(text, language="pt")

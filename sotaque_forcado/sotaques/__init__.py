@@ -13,7 +13,7 @@ from sotaque_forcado.preprocessors import substituicao_v_por_b, substituicao_de_
     acentuacao_elh, perda_som_o_masculino_quando_passado_plural, perda_silaba_intermedia_palavras_esdruxulas, \
     perda_do_i_entre_consoantes, enfase_anasalado_final_com_e, u_frances, substituicao_nao_por_num, \
     paragoge_em_e_apos_z, substituicao_de_al_por_aur, substituicao_a_para_e_antes_de_nasal, ditongacao_do_e_para_eu, \
-s_reverso, z_reverso, dezoito_com_acento, substituicao_como_por_cumo
+    s_reverso, z_reverso, dezoito_com_acento, substituicao_como_por_cumo, substituicao_final_de_agem_por_age
 from sotaque_forcado.utils import normalize
 
 
@@ -71,6 +71,8 @@ class Sotaque:
                 w = substituicao_de_s_por_x(w)
             if self.rules.get('substituicao_final_de_agem_por_aije'):
                 w = substituicao_final_de_agem_por_aije(w)
+            if self.rules.get('substituicao_final_de_agem_por_age'):
+                w = substituicao_final_de_agem_por_age(w)
             if self.rules.get('substituicao_final_de_oi_por_u'):
                 w = substituicao_final_de_oi_por_u(w)
             if self.rules.get('substituicao_final_de_o_por_e'):

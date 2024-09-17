@@ -1,6 +1,8 @@
 import re
 from typing import List, Optional
 
+from sotaque_forcado.silabas import split_into_syllables, identify_tonic_vowel
+
 
 def substituicao_v_por_b(w: str) -> str:
     """
@@ -219,15 +221,33 @@ def ditongacao_do_e_para_eu(w):
 
 def ditongacao_vogal_tonica_com_u(w: str) -> str:
     """
-    Add 'u' before the tonic vowel. Example: olho -> uôlho, livro -> lúivro.
+    Add 'u' before the tonic vowel.
+    Example: olho -> uôlho, livro -> lúivro.
     """
-    if w.startswith("li"):
-        w = "lúi" + w[2:]
-    elif w.startswith("olh"):
-        w = "uôlh" + w[3:]
+    if len(w) < 4:
+        return w
+
+    syllables = split_into_syllables(w)
+    tonic_syllable_idx, tonic_vowel_idx = identify_tonic_vowel(syllables)
+
+    if tonic_vowel_idx == -1:
+        return w  # No tonic vowel found
+
+    tonic_syllable = syllables[tonic_syllable_idx]
+    ending = tonic_syllable[tonic_vowel_idx:]
+
+    # TODO this can be improved for sure... sorry for the mess
+    if ending.startswith("o"):
+        new_syllable = tonic_syllable[:tonic_vowel_idx] + "uô" + ending[1:]
+    elif tonic_syllable[tonic_vowel_idx - 1] == "u":
+        new_syllable = tonic_syllable[:tonic_vowel_idx - 1] + "ú" + ending
+    elif ending.startswith("u") or tonic_syllable[tonic_vowel_idx - 1] in "u" or ending.startswith("a"):
+        new_syllable = tonic_syllable
     else:
-        w = w.replace("iga", "úiga")
-    return w
+        new_syllable = tonic_syllable[:tonic_vowel_idx] + 'ú' + ending
+    syllables[tonic_syllable_idx] = new_syllable
+
+    return ''.join(syllables)
 
 
 def enfase_anasalado_final_com_a(w: str) -> str:
@@ -332,7 +352,9 @@ def paragoge_em_i(w: str) -> str:
     """
     Add 'i' after final 'r'. Example: fazer -> fazêri, dizer -> dizêri, dormir -> dormiri
     """
-    if w.endswith("er"):
+    if w.endswith("rrer"):
+        w = w + "i"
+    elif w.endswith("er"):
         w = w[:-2] + "êri"
     elif w.endswith("ir"):
         w = w[:-2] + "íri"
@@ -345,15 +367,22 @@ def paragoge_em_e(w: str) -> str:
     """
     Preserve final 'e' in verbs. Example: fazer -> fazêre, comer -> comêre, falar -> falare
     """
-    if w.endswith("r"):
-        if w.endswith("rrer"):
-            w = w[:-2] + "oerê"
-        elif w.endswith("er"):
-            w = w[:-2] + "êre"
-        elif w.endswith("ir"):
-            w = w[:-2] + "íri"
-        else:
-            w += "e"
+    if w.endswith("rrer"):
+        w = w + "ê"
+    elif w.endswith("er"):
+        w = w[:-2] + "êre"
+    elif w.endswith("ir"):
+        w = w[:-2] + "íri"
+    elif w.endswith("r"):
+        w += "e"
+    return w
+
+
+def substituicao_final_de_agem_por_age(w):
+    # Substituição das terminações "agem" por "age".
+    # Exemplos: «paragem» (lido parage), «viagem» (lido viage).
+    if w.endswith("agem"):
+        w = w[:-1]
     return w
 
 

@@ -3,5 +3,6 @@
   "acentuacao_ditongos": true,
   "abrir_ditongos": true,
   "acentuacao_elh": true,
-  "acentuacao_ach": true
+  "acentuacao_ach": true,
+  "substituicao_nao_por_num": true
 }

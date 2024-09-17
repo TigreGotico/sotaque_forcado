@@ -91,6 +91,42 @@ def substituicao_de_ae_por_an(w: str) -> str:
     return w.replace("ães", "ân")
 
 
+def ditongacao_crescente(w: str) -> str:
+    """Ditongação crescente
+    Porto -> Puorto
+    Bolo -> Buolo
+    """
+    if w.startswith("por"):
+        w = "puor" + w[3:]
+    if w.startswith("bol"):
+        w = "buol" + w[3:]
+    return w
+
+
+def paragoge_em_e_apos_z(w: str) -> str:
+    """Adiciona um 'e' no final de palavras terminadas em 'z'.
+    exemplo: nariz -> narize"""
+    if w.endswith("z"):
+        w = w + "e"
+    return w
+
+
+def substituicao_a_para_e_antes_de_nasal(w: str) -> str:
+    """Muda 'a' para 'ê' antes de sons nasais ('n', 'm'), exceto se houver um 'c' antes.
+    exemplos: pestana > pestêna, montanha > montênha, cana -> cana (não modifica)"""
+    # Regex para 'a' seguido de sons nasais ('n', 'm'), exceto se houver um 'c' antes
+    w = re.sub(r'(?<!c)a(?=[nm])', 'ê', w)
+    return w
+
+
+def substituicao_de_al_por_aur(w: str) -> str:
+    """Passagem de 'al' para 'aur' no minhoto central
+    exemplo: alguidar > aurguidar"""
+    if len(w) > 3:
+        w = w.replace('al', 'aur')
+    return w
+
+
 def substituicao_de_oe_por_on(w: str) -> str:
     """
     Replace 'ões' with 'ôns'. Example: leões -> leôns. verões -> verôns.
@@ -100,13 +136,71 @@ def substituicao_de_oe_por_on(w: str) -> str:
 
 def u_frances(w: str) -> str:
     """
-    Apply the 'french u' sound. Example: tu -> tú, carro -> carrú.
+    Apply the 'french u' sound .
+    Example: tu -> tiú, müla -> miula
     """
     if w == "tu":
-        w = "tú"
+        w = "tiú"
     # palavras terminadas com "o" são mais parecidas com o som "u"
     elif len(w) > 2 and w.endswith("o") and w[-2] != "ã":
-        w = w[:-1] + "ú"
+        w = w[:-1] + "iú"
+    return w
+
+
+def substituicao_nao_por_num(w):
+    if w == "não":
+        w = "num"
+    return w
+
+
+def s_reverso(w):
+    """In standard Portuguese, "s" has a typical pronunciation, but in Transmontano, it might sound more like "z":
+
+    seis -> zeis
+    moço -> mozo
+    """
+
+    w = w.replace("ç", "z")
+    # Apply 's' to 'z' transformation, considering context
+    # Example: replacing 's' with 'z' when it is between vowels or at the end
+    # bazilha -> bacilha
+    w = re.sub(r'(?<=[aeiou])s(?=[aeiou])', 'z', w)
+    return w
+
+
+def z_reverso(w):
+    """In standard Portuguese, "z" is pronounced as [z], but in the Transmontano dialect, it might sound more like "s":
+    zero -> cero
+    zona -> sona
+    """
+    # Replace 'z' with 's' if it is at the beginning of the word and followed by a vowel
+    # seis -> zeis
+    w = re.sub(r'^z(?=[aeiou])', 's', w)
+    if len(w) > 2 and w.startswith("se"):
+        w = "ce" + w[2:]
+
+    # Replace 'ez' at the end of the word with 'és'
+    if w.endswith("ez"):
+        w = "és" + w[:-2]
+    return w
+
+
+def ditongacao_do_e_para_eu(w):
+    """
+    Apply diphthongization rules to the vowel 'e'.
+
+    Examples:
+    - "treze" -> "treuze"
+    - "preto" -> "preuto"
+
+    Args:
+    - w (str): The input word.
+
+    Returns:
+    - str: The transformed word.
+    """
+    # replace 'e' between consonants with 'eu'
+    w = re.sub(r'(?<=[^aeiou])e(?=[^aeiou])', 'eu', w)
     return w
 
 
@@ -355,8 +449,8 @@ def perda_do_i_entre_consoantes(w: str) -> str:
     Remove the 'i' between consonants.
 
     Examples:
-    - "Filipe" -> "Flipe"
-    - "Lisboa" -> "Lsboa"
+    - "Filipe" -> "Felipe"
+    - "Lisboa" -> "Lesboa"
 
     Args:
     - w (str): The input word.
@@ -364,7 +458,7 @@ def perda_do_i_entre_consoantes(w: str) -> str:
     Returns:
     - str: The transformed word.
     """
-    w = re.sub(r'(?<=[^aeiouhx])i(?=[^aeiougçcv])', 'e', w, count=1)
+    w = re.sub(r'(?<=[^aeiouhx])i(?=[^aeiougçcvh])', 'e', w, count=1)
     return w
 
 
@@ -384,8 +478,6 @@ def abrir_ditongos(w: str) -> str:
     """
     if w == "mãe":
         w = "mánhe"
-    # elif w == "não":
-    #    w = "num"
     elif w.endswith("ães"):
         w = w[:-3] + "áinhes"
     return w
@@ -393,10 +485,12 @@ def abrir_ditongos(w: str) -> str:
 
 def substituicao_de_elh_por_alh(w: str) -> str:
     """
-    Replace 'elh' with 'âlh'.
+    Replace 'elh' with 'âlh', except when 'elh' is preceded by 'v'.
 
     Examples:
     - "coelho" -> "coâlho"
+    - "vermelho" -> "vermâlho"
+    - "velho" -> "velho" (no change, since 'elh' is preceded by 'v')
 
     Args:
     - w (str): The input word.
@@ -404,9 +498,11 @@ def substituicao_de_elh_por_alh(w: str) -> str:
     Returns:
     - str: The transformed word.
     """
-    if "elh" in w:
-        w = w.replace("elh", "âlh")
-    return w
+    # Define the pattern: 'elh' not preceded by 'v'
+    pattern = r'(?<!v)elh'
+    # Replace 'elh' with 'âlh' where the pattern matches
+    result = re.sub(pattern, 'âlh', w)
+    return result
 
 
 def substituicao_final_de_agem_por_aije(w: str) -> str:

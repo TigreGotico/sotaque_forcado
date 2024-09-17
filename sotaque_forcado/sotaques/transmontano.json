@@ -3,5 +3,9 @@
   "substituicao_final_de_agem_por_aije": true,
   "substituicao_de_ou_por_oi": true,
   "substituicao_de_ch_por_tch": true,
-  "substituicao_de_z_por_j": true
+  "substituicao_de_z_por_j": true,
+  "paragoge_em_e_apos_z": true,
+  "substituicao_a_para_e_antes_de_nasal": true,
+  "s_reverso": true,
+  "z_reverso": true
 }

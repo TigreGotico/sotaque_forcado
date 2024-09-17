@@ -1,5 +1,7 @@
 import json
+
 from quebra_frases import word_tokenize
+
 from sotaque_forcado.preprocessors import substituicao_v_por_b, substituicao_de_oe_por_on, substituicao_de_ae_por_an, \
     substituicao_de_en_por_ein, substituicao_de_elh_por_alh, substituicao_de_ou_por_oi, substituicao_de_ch_por_tch, \
     substituicao_de_z_por_j, substituicao_de_z_por_x, substituicao_de_s_por_x, substituicao_final_de_agem_por_aije, \
@@ -9,7 +11,9 @@ from sotaque_forcado.preprocessors import substituicao_v_por_b, substituicao_de_
     acentuacao_ditongos, palatizacao_consoante_l_antecedida_por_i, paragoge_em_i, paragoge_em_e, apocope_do_o, \
     enfase_anasalado_final_com_a, suavizacao_elh, perda_do_u_final_depois_de_i, abrir_ditongos, acentuacao_ach, \
     acentuacao_elh, perda_som_o_masculino_quando_passado_plural, perda_silaba_intermedia_palavras_esdruxulas, \
-    perda_do_i_entre_consoantes, enfase_anasalado_final_com_e, u_frances
+    perda_do_i_entre_consoantes, enfase_anasalado_final_com_e, u_frances, substituicao_nao_por_num, \
+    paragoge_em_e_apos_z, substituicao_de_al_por_aur, substituicao_a_para_e_antes_de_nasal, ditongacao_do_e_para_eu, \
+s_reverso, z_reverso
 from sotaque_forcado.utils import normalize
 
 
@@ -29,6 +33,20 @@ class Sotaque:
             nextw = words[idx + 1] if idx < len(words) - 1 else ""
             if self.rules.get('substituicao_v_por_b'):
                 w = substituicao_v_por_b(w)
+            if self.rules.get("s_reverso"):
+                w = s_reverso(w)
+            if self.rules.get("z_reverso"):
+                w = z_reverso(w)
+            if self.rules.get("ditongacao_do_e_para_eu"):
+                w = ditongacao_do_e_para_eu(w)
+            if self.rules.get("substituicao_a_para_e_antes_de_nasal"):
+                w = substituicao_a_para_e_antes_de_nasal(w)
+            if self.rules.get("paragoge_em_e_apos_z"):
+                w = paragoge_em_e_apos_z(w)
+            if self.rules.get("substituicao_de_al_por_aur"):
+                w = substituicao_de_al_por_aur(w)
+            if self.rules.get('substituicao_nao_por_num'):
+                w = substituicao_nao_por_num(w)
             if self.rules.get('substituicao_de_oe_por_on'):
                 w = substituicao_de_oe_por_on(w)
             if self.rules.get('substituicao_de_ae_por_an'):

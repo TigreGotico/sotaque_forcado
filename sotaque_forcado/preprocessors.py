@@ -147,6 +147,19 @@ def u_frances(w: str) -> str:
     return w
 
 
+def substituicao_como_por_cumo(w):
+    if w == "como":
+        return "cumo"
+    return w
+
+
+def dezoito_com_acento(w):
+    # "tu pedes um biscoito ou um biscóito?"
+    if w == "dezoito":
+        w = "dezóito"
+    return w
+
+
 def substituicao_nao_por_num(w):
     if w == "não":
         w = "num"

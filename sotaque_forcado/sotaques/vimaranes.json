@@ -4,5 +4,6 @@
   "abrir_ditongos": true,
   "acentuacao_elh": true,
   "acentuacao_ach": true,
-  "substituicao_nao_por_num": true
+  "substituicao_nao_por_num": true,
+  "substituicao_como_por_cumo": true
 }

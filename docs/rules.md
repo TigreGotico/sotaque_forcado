@@ -2,7 +2,7 @@
 
 The rules in `sotaque_forcado.preprocessors` are the building blocks of every
 accent. Each is a pure function: a word in, a transformed word out (two rules also
-take context — see below). A preset is just a set of these switched on.
+take context, see below). A preset is just a set of these switched on.
 
 Group them by the kind of change they make.
 
@@ -92,16 +92,19 @@ def substituicao_de_z_por_j_ligacoes_palavras_acabadas_s_com_vogal(
         w: str, nextw: Optional[str]) -> str
 ```
 
-- `monotongacao` accepts `target_dits` to limit which diphthongs are collapsed;
-  with no argument it collapses all it knows.
+- `monotongacao` accepts `target_dits` to limit which diphthongs are collapsed.
+  With no argument it collapses all it knows.
 - the liaison rule turns a trailing `s` into `j` only when `nextw` starts with a
   vowel, e.g. `("quis", "entrar")` → `quij`, but `("quis", "falar")` → `quis`.
 
-Inside `add_accent`, the liaison rule is fed the next token automatically; the
+Inside `add_accent`, the liaison rule is fed the next token automatically. The
 others all receive a single word.
 
 ## Where next
 
-- [quickstart.md](quickstart.md) — the 5-minute tour
-- [api.md](api.md) — `Sotaque`, helpers, and signatures
-- [advanced.md](advanced.md) — building presets and calling rules directly
+- [quickstart.md](quickstart.md): the 5-minute tour
+- [api.md](api.md): `Sotaque`, helpers, and signatures
+- [advanced.md](advanced.md): building presets and calling rules directly
+
+---
+[← Advanced](advanced.md) · [Home](../README.md)

@@ -1,3 +1,23 @@
+# sotaque_forcado
+
+`sotaque_forcado` rewrites standard European Portuguese (pt-PT) text into a
+regional accent, then turns the accented text into IPA. A `Sotaque` object
+holds one accent, defined by a flat JSON file of rule switches. It applies
+around 45 word-level transformation rules, such as consonant swaps, diphthong
+changes, and word-ending changes, in a fixed order.
+
+## Install
+
+The package is used in-tree (`import sotaque_forcado`), not pip-installed.
+
+```bash
+pip install -r requirements.txt   # num2words, quebra_frases, pyphen
+pip install -r extras.txt         # phonemizer — only for phonemize(), pulls an espeak backend
+```
+
+`add_accent()` needs only the core requirements. `phonemize()` also needs
+`phonemizer` and a system `espeak-ng` backend.
+
 ## Usage
 
 ```python
@@ -32,12 +52,12 @@ test = [
 for sent in test:
     print(sent, "->", s.add_accent(sent), "->", s.phonemize(sent))
     # quis entrar na piscina mas a água estava fria -> Quij entrari nã piscinã maj a água estava fria . -> kiʒ eɪŋtɹɐɾi nɐ̃ pisinɐ̃ maʒ ɐ aɡwɐ ʃtɐvɐ fɹiɐ 
-    # tenho um quilo de pastilha elástica na mochila -> Tenh um quil de pastilha elástica nã mochila . -> teɲ ũŋ kil dɨ pɐʃtiʎɐ elaʃtikɐ nɐ̃ muʃilɐ 
+    # tenho um quilo de pastilha elástica na mochila -> Tenh um quil de pastilha elástica nã mochila . -> teɲ ũŋ kil dɨ pɐʃtiʎɐ elaʃtikɐ nɐ̃ muʃilɐ 
     # o boi passou a correr porque viu a vaca a pastar -> O boi passô a corrêri porque viu a vaca a pastari . -> ʊ boɪ pɐso ɐ kuʁeɾi poɾəkɨ viʊ ɐ vakɐ ɐ pɐʃtɐɾi 
-    # A Filipa tem um coelho que come cenouras o ano inteiro -> A Filipa têm um coêlh que come cenôraj o an intêr . -> ɐ filipɐ teɪŋ ũŋ kueʎ kɨ komɨ senoɾɐʒ u ɐ̃ŋ iŋteɹ 
+    # A Filipa tem um coelho que come cenouras o ano inteiro -> A Filipa têm um coêlh que come cenôraj o an intêr . -> ɐ filipɐ teɪŋ ũŋ kueʎ kɨ komɨ senoɾɐʒ u ɐ̃ŋ iŋteɹ 
     # o meu sotaque é especial e também se percebe bem -> O mê sotaque é especial e tambêm se percebe bêm . -> ʊ me sutakɨ ɛ ʃpesiɑl i tɐ̃mbeɪŋ sɨ peɾəsɛbɨ beɪŋ 
-    # eu tenho muitos amigos mas tu és o número um -> Eu tenh muitoj amigos mas tu éj o númer um . -> eʊ teɲ muɪtoʒ ɐmiɡʊʒ mɐʃ tu ɛʒ ʊ nũmɨɹ ũŋ 
-    # todos os verões eu faço uma viagem com os meus cães -> Todoj os verõj eu faç uma viagêm com os meus cães . -> tudoʒ uʒ vɨɾõʒ eʊ fas umɐ viɐʒeɪŋ kom uʒ meʊʃ kɐ̃ɨʃ 
+    # eu tenho muitos amigos mas tu és o número um -> Eu tenh muitoj amigos mas tu éj o númer um . -> eʊ teɲ muɪtoʒ ɐmiɡʊʒ mɐʃ tu ɛʒ ʊ nũmɨɹ ũŋ 
+    # todos os verões eu faço uma viagem com os meus cães -> Todoj os verõj eu faç uma viagêm com os meus cães . -> tudoʒ uʒ vɨɾõʒ eʊ fas umɐ viɐʒeɪŋ kom uʒ meʊʃ kɐ̃ɨʃ 
     # o quê ? não percebi nada do que tu disseste -> O quê ? nã percebi nada do que tu disseste . -> ʊ ke nɐ̃ peɾəsɨbi nadɐ dʊ kɨ tu disɛʃtɨ 
     # dá-me a mão para irmos comprar pão porque eu tenho medo do cão -> Dá me a mã para irmos comprari pã porque eu tenh med do cã . -> da mɨ ɐ mɐ̃ pɐɾɐ iɾəmʊʃ kumpɹɐɾi pɐ̃ poɾəkɨ eʊ teɲ med dʊ kɐ̃ 
     # ó mãe olha que está vermelho -> Ó mãe olha que está vermêlh . -> ɔ mɐ̃j ɔʎɐ kɨ esta vɨɾəmeʎ 
@@ -55,7 +75,13 @@ for sent in test:
     # que deus te ajude que Jesus já não consegue -> Que deus te ajude que Jesus já nã consegue . -> kɨ deʊʃ tɨ ɐʒudɨ kɨ ʒɨzuʒ ʒa nɐ̃ kuŋsɛɡɨ 
 ```
 
+See [docs/quickstart.md](docs/quickstart.md) for a step-by-step tour,
+[docs/api.md](docs/api.md) for full signatures, and
+[docs/advanced.md](docs/advanced.md) for building custom presets.
+
 ## Regras
+
+Cada regra é uma pequena transformação de texto aplicada palavra a palavra.
 
 | Transformação                                                    | Descrição                                                                   | Exemplo(s)                                  |
 |------------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------|
@@ -107,6 +133,8 @@ for sent in test:
 | `dezoito_com_acento`                                             | "dezóito? tu pedes um biscoito ou um biscóito?"                             | dezoito -> dezóito                          |
 
 ## Sotaques
+
+Cada sotaque é uma lista de regras aplicadas por ordem fixa.
 
 | Sotaque       | Regras Aplicadas                                                                                                                                                                                                                                                                                                                                                                                                                |
 |---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -200,16 +228,21 @@ template
 }
 ```
 
+## Related projects
+
+- [TigreGotico/orthography2ipa](https://github.com/TigreGotico/orthography2ipa) — grapheme-to-IPA phonemizer engine; `sotaque_forcado` covers the accent-rewriting step that a phonemizer like this one can run on top of.
+- [TigreGotico/tugaphone](https://github.com/TigreGotico/tugaphone) — another pt-PT phonemizer in the org.
+
 ## Referências
 
-- http://ww3.aeje.pt/avcultur/hjco/GramCom/Cap06_02.htm
-- https://pt.wikipedia.org/wiki/Dialetos_da_l%C3%ADngua_portuguesa
-- https://pt.wikipedia.org/wiki/Dialeto_estremenho
-- https://pt.wikipedia.org/wiki/Dialeto_madeirense
-- https://pt.wikipedia.org/wiki/Dialeto_transmontano
-- https://pt.wikipedia.org/wiki/Dialeto_algarvio
-- https://pt.wikipedia.org/wiki/Dialeto_alentejano
-- https://pt.wikipedia.org/wiki/Dialeto_a%C3%A7oriano
-- https://www.reddit.com/r/portugal/comments/32b81c/diferen%C3%A7as_entre_sotaques/
-- https://www.reddit.com/r/Portuguese/comments/mu95g9/what_are_some_accents_of_portugal_and_what
-- https://www.reddit.com/r/Portuguese/comments/p5qx9q/quais_s%C3%A3o_os_diferentes_sotaques_das_regi%C3%B5es_de/
+- [Gramática comparada dos dialetos do português](http://ww3.aeje.pt/avcultur/hjco/GramCom/Cap06_02.htm)
+- [Dialetos da língua portuguesa (Wikipédia)](https://pt.wikipedia.org/wiki/Dialetos_da_l%C3%ADngua_portuguesa)
+- [Dialeto estremenho (Wikipédia)](https://pt.wikipedia.org/wiki/Dialeto_estremenho)
+- [Dialeto madeirense (Wikipédia)](https://pt.wikipedia.org/wiki/Dialeto_madeirense)
+- [Dialeto transmontano (Wikipédia)](https://pt.wikipedia.org/wiki/Dialeto_transmontano)
+- [Dialeto algarvio (Wikipédia)](https://pt.wikipedia.org/wiki/Dialeto_algarvio)
+- [Dialeto alentejano (Wikipédia)](https://pt.wikipedia.org/wiki/Dialeto_alentejano)
+- [Dialeto açoriano (Wikipédia)](https://pt.wikipedia.org/wiki/Dialeto_a%C3%A7oriano)
+- [Diferenças entre sotaques (r/portugal)](https://www.reddit.com/r/portugal/comments/32b81c/diferen%C3%A7as_entre_sotaques/)
+- [What are some accents of Portugal (r/Portuguese)](https://www.reddit.com/r/Portuguese/comments/mu95g9/what_are_some_accents_of_portugal_and_what)
+- [Quais são os diferentes sotaques das regiões de Portugal (r/Portuguese)](https://www.reddit.com/r/Portuguese/comments/p5qx9q/quais_s%C3%A3o_os_diferentes_sotaques_das_regi%C3%B5es_de/)

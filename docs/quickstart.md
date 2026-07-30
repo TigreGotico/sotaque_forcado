@@ -1,8 +1,8 @@
-# Quickstart — zero to sotaque
+# Quickstart: zero to sotaque
 
 `sotaque_forcado` rewrites standard pt-PT text into a regional Portuguese accent,
 then (optionally) turns the accented text into IPA. The core idea is a single
-class — `Sotaque` — driven by a flat JSON file of rule switches.
+class, `Sotaque`, driven by a flat JSON file of rule switches.
 
 ## 1. Install
 
@@ -10,7 +10,7 @@ The package is used in-tree (import `sotaque_forcado`), not pip-installed:
 
 ```bash
 pip install -r requirements.txt   # num2words, quebra_frases, pyphen
-pip install -r extras.txt         # phonemizer — only for phonemize(), pulls an espeak backend
+pip install -r extras.txt         # phonemizer, only for phonemize(), pulls an espeak backend
 ```
 
 `add_accent()` works with the core requirements alone. `phonemize()` additionally
@@ -19,8 +19,8 @@ needs `phonemizer` plus a system `espeak-ng` backend.
 ## 2. The one thing to understand
 
 A `Sotaque` is a bundle of rules. Each rule is a small text transformation
-(`v` → `b`, final `ar` → `á`, …). You point `Sotaque` at a JSON file that turns
-rules on or off; `add_accent()` then walks the text word by word and applies every
+(`v` → `b`, final `ar` → `á`, …). Point `Sotaque` at a JSON file that turns
+rules on or off. `add_accent()` then walks the text word by word and applies every
 enabled rule in a fixed order.
 
 ```python
@@ -69,7 +69,7 @@ print(s.phonemize("o meu sotaque é especial"))
 ```
 
 If `phonemizer`/`espeak-ng` is not installed, the import inside `phonemize()`
-raises — `add_accent()` keeps working regardless.
+raises. `add_accent()` keeps working regardless.
 
 ## 5. Roll your own accent
 
@@ -91,6 +91,9 @@ print(s.add_accent("a vila tem um velho varão"))
 
 ## Where next
 
-- [api.md](api.md) — `Sotaque`, every rule key, and the syllable helpers with real signatures
-- [advanced.md](advanced.md) — building custom presets, rule ordering, and gotchas
-- [rules.md](rules.md) — the catalogue of transformation functions, grouped
+- [api.md](api.md): `Sotaque`, every rule key, and the syllable helpers with real signatures
+- [advanced.md](advanced.md): building custom presets, rule ordering, and gotchas
+- [rules.md](rules.md): the catalogue of transformation functions, grouped
+
+---
+[Home](../README.md) · [API →](api.md)

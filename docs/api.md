@@ -16,7 +16,7 @@ class Sotaque:
 ### `Sotaque(config_file)`
 
 `config_file` is a path to a JSON file holding a flat `{rule_name: bool}` map.
-The file is read once at construction and kept on `self.rules` (a `dict`); the
+The file is read once at construction and kept on `self.rules` (a `dict`). The
 path is kept on `self.path`. `repr(s)` is `Sotaque(<basename without .json>)`.
 
 ```python
@@ -34,7 +34,7 @@ repr(s)            # 'Sotaque(porto)'
 
 The main entry point. Pipeline:
 
-1. `utils.normalize(text)` — digits → words (`num2words`, `lang="pt"`), special
+1. `utils.normalize(text)`: digits → words (`num2words`, `lang="pt"`), special
    chars stripped, first letter capitalized, trailing `.` added if no `.`/`?`.
 2. `quebra_frases.word_tokenize` splits into tokens.
 3. Each enabled rule is applied to every token, in a fixed internal order. One
@@ -48,8 +48,8 @@ Returns the rewritten, punctuated sentence:
 s.add_accent("quis entrar na piscina")     # 'Quij entrari nã piscinã .'  (algarvio)
 ```
 
-Only the core requirements (`num2words`, `quebra_frases`, `pyphen`) are needed —
-no `phonemizer`.
+Only the core requirements (`num2words`, `quebra_frases`, `pyphen`) are needed.
+It does not need `phonemizer`.
 
 ### `phonemize(text) -> str`
 
@@ -97,9 +97,9 @@ def substituicao_de_z_por_j_ligacoes_palavras_acabadas_s_com_vogal(
 - `monotongacao` collapses diphthongs (`ei`→`ê`, `ou`→`ô`, `ão`→`ã`, …). Pass
   `target_dits` to restrict which ones are touched.
 - the liaison rule turns a trailing `s` into `j` when the next word starts with a
-  vowel (`quis entrar` → `quij entrar`); hence the second `nextw` argument.
+  vowel (`quis entrar` → `quij entrar`). This is why it takes a second `nextw` argument.
 
-These are pure functions on plain strings — you can call them directly, outside
+These are pure functions on plain strings. You can call them directly, outside
 any `Sotaque`:
 
 ```python
@@ -122,7 +122,7 @@ def get_syllable_info(word: str) -> List[Tuple[int, int, str, bool]]
 ```
 
 - `split_into_syllables("trabalho")` → `['tra', 'ba', 'lho']`.
-- `identify_tonic_syllable` returns the index of the stressed syllable; it also
+- `identify_tonic_syllable` returns the index of the stressed syllable. It also
   accepts a word string and splits it for you.
 - `identify_tonic_vowel` returns `(syllable_index, vowel_index_in_syllable)`.
 - `get_syllable_info` returns one `(start, end, syllable, is_tonic)` tuple per
@@ -143,7 +143,7 @@ def remove_special_chars(text: str) -> str
 def replace_patterns(text: str) -> str
 ```
 
-`normalize` is what `add_accent` calls first; the others are its stages.
+`normalize` is what `add_accent` calls first. The others are its stages.
 `convert_digits_to_words` uses `num2words(..., lang="pt")`, so `"tenho 3 cães"`
 becomes `"tenho três cães"`.
 
@@ -154,6 +154,9 @@ normalize("tenho 3 cães")            # 'Tenho três cães.'
 
 ## Where next
 
-- [quickstart.md](quickstart.md) — the 5-minute tour
-- [advanced.md](advanced.md) — custom presets, ordering, and gotchas
-- [rules.md](rules.md) — every transformation function grouped by effect
+- [quickstart.md](quickstart.md): the 5-minute tour
+- [advanced.md](advanced.md): custom presets, ordering, and gotchas
+- [rules.md](rules.md): every transformation function grouped by effect
+
+---
+[← Quickstart](quickstart.md) · [Home](../README.md) · [Advanced →](advanced.md)

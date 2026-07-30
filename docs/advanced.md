@@ -5,7 +5,7 @@ Recipes, gotchas, and the mechanics behind `add_accent`.
 ## Build a preset from the template
 
 `sotaques/padrao.json` is the all-false template. Copy it, flip the rules you
-want, and load it — nothing else is needed to define a new accent.
+want, and load it. Nothing else is needed to define a new accent.
 
 ```python
 import json, os, tempfile
@@ -27,7 +27,7 @@ s = Sotaque(path)
 print(s.add_accent("a velha vila do varão"))
 ```
 
-Unknown keys are harmless — `add_accent` only reads keys it knows via
+Unknown keys are harmless. `add_accent` only reads keys it knows via
 `self.rules.get(...)`, so a typo silently does nothing rather than erroring.
 
 ## Rule ordering matters
@@ -62,7 +62,7 @@ for name, s in loaded.items():
 ## Calling rules directly
 
 Every entry in `preprocessors` is a pure function on strings, so you can probe a
-single transformation without a `Sotaque` at all — handy for testing or for
+single transformation without a `Sotaque` at all. This is handy for testing or for
 composing your own pipeline:
 
 ```python
@@ -77,7 +77,7 @@ liaison("quis", "entrar")              # 'quij'  (next word starts with a vowel)
 liaison("quis", "falar")               # 'quis'  (next word starts with a consonant)
 ```
 
-Note these operate on a single already-tokenized word; `add_accent` handles
+Note these operate on a single already-tokenized word. `add_accent` handles
 tokenization, normalization, and ordering for you.
 
 ## Syllables and stress
@@ -97,7 +97,7 @@ get_syllable_info("trabalho")         # [(start, end, syllable, is_tonic), ...]
 
 ## Phonemization is a separate tier
 
-`add_accent` needs only the core requirements. `phonemize` additionally imports
+`add_accent` needs only the core requirements. `phonemize` also imports
 `phonemizer` (lazily, inside the method) and needs a system `espeak-ng` backend.
 Guard for it so the accenting path keeps working everywhere:
 
@@ -119,12 +119,15 @@ except Exception as exc:        # phonemizer / espeak-ng not installed
   rather than hardcoding `sotaque_forcado/sotaques/...`, so it works regardless of
   the current working directory.
 - **`phonemize` raises late.** Missing `phonemizer`/`espeak-ng` only bites when
-  you call `phonemize`; everything else is independent of it.
+  you call `phonemize`. Everything else is independent of it.
 - **Rules are token-local.** Apart from the liaison rule, each rule sees one word
   at a time, so multi-word context beyond the immediate next token is not modelled.
 
 ## Where next
 
-- [quickstart.md](quickstart.md) — the 5-minute tour
-- [api.md](api.md) — full signatures and return shapes
-- [rules.md](rules.md) — the transformation catalogue
+- [quickstart.md](quickstart.md): the 5-minute tour
+- [api.md](api.md): full signatures and return shapes
+- [rules.md](rules.md): the transformation catalogue
+
+---
+[← API reference](api.md) · [Home](../README.md) · [Rules →](rules.md)

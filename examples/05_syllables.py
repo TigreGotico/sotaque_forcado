@@ -15,7 +15,7 @@ def main() -> None:
         )
     except Exception as exc:  # pyphen missing
         print("skipped: silabas not importable:", exc)
-        print("install the core requirements: pip install -r requirements.txt")
+        print("install the core dependencies: pip install .")
         return
 
     for word in ["trabalho", "coelho", "piscina", "fogo"]:

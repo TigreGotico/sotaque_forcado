@@ -6,15 +6,13 @@ class, `Sotaque`, driven by a flat JSON file of rule switches.
 
 ## 1. Install
 
-The package is used in-tree (import `sotaque_forcado`), not pip-installed:
-
 ```bash
-pip install -r requirements.txt   # num2words, quebra_frases, pyphen
-pip install -r extras.txt         # phonemizer, only for phonemize(), pulls an espeak backend
+pip install .            # num2words, quebra_frases, pyphen
+pip install '.[extras]'  # phonemizer, only for phonemize(), pulls an espeak backend
 ```
 
-`add_accent()` works with the core requirements alone. `phonemize()` additionally
-needs `phonemizer` plus a system `espeak-ng` backend.
+`add_accent()` works with the core dependencies alone. `phonemize()` also needs
+`phonemizer` and a system `espeak-ng` backend.
 
 ## 2. The one thing to understand
 

@@ -17,7 +17,7 @@ def main() -> None:
         )
     except Exception as exc:
         print("skipped: preprocessors not importable:", exc)
-        print("install the core requirements: pip install -r requirements.txt")
+        print("install the core dependencies: pip install .")
         return
 
     print("substituicao_v_por_b('vila')        ->", substituicao_v_por_b("vila"))

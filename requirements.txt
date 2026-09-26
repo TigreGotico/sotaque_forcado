@@ -1,3 +1,0 @@
-num2words
-quebra_frases
-pyphen

@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sotaque_forcado"
+version = "0.1.0a1"
+description = "Rewrite Portuguese text to read in a regional accent"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "JarbasAi", email = "jarbasai@mailfence.com" }]
+requires-python = ">=3.9"
+keywords = ["portuguese", "accent", "dialect", "phonetics", "nlp", "tts"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Linguistic",
+]
+
+dependencies = [
+    "num2words",
+    "quebra_frases",
+    "pyphen",
+]
+
+[project.optional-dependencies]
+# phonemizer is only needed by the phonemize helpers, not by the accent rules.
+extras = ["phonemizer"]
+test = ["pytest"]
+
+[project.urls]
+Homepage = "https://github.com/TigreGotico/sotaque_forcado"
+Repository = "https://github.com/TigreGotico/sotaque_forcado"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["sotaque_forcado*"]
+
+[tool.setuptools.package-data]
+sotaque_forcado = ["sotaques/*.json"]
+

@@ -13,7 +13,7 @@ def main() -> None:
         from sotaque_forcado.sotaques import Sotaque
     except Exception as exc:
         print("skipped: sotaque_forcado not importable:", exc)
-        print("install the core requirements: pip install -r requirements.txt")
+        print("install the core dependencies: pip install .")
         return
 
     presets = os.path.dirname(smod.__file__)
@@ -28,7 +28,7 @@ def main() -> None:
     try:
         print("IPA:     ", s.phonemize(sentence))
     except Exception as exc:
-        print("IPA:      unavailable (install extras.txt + espeak-ng):", exc)
+        print("IPA:      unavailable (install .[extras] + espeak-ng):", exc)
 
 
 if __name__ == "__main__":

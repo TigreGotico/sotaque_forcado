@@ -8,14 +8,12 @@ changes, and word-ending changes, in a fixed order.
 
 ## Install
 
-The package is used in-tree (`import sotaque_forcado`), not pip-installed.
-
 ```bash
-pip install -r requirements.txt   # num2words, quebra_frases, pyphen
-pip install -r extras.txt         # phonemizer — only for phonemize(), pulls an espeak backend
+pip install .            # num2words, quebra_frases, pyphen
+pip install '.[extras]'  # phonemizer — only for phonemize(), pulls an espeak backend
 ```
 
-`add_accent()` needs only the core requirements. `phonemize()` also needs
+`add_accent()` needs only the core dependencies. `phonemize()` also needs
 `phonemizer` and a system `espeak-ng` backend.
 
 ## Usage
